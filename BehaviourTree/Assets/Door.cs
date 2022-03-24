@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    private bool isOpen = false;
-    private bool isLocked = true;
+    public bool isOpen = false;
+    public bool isLocked = true;
     private Vector3 doorPosition;
     //Vector3 doorPos;
     // Start is called before the first frame update
@@ -14,6 +14,10 @@ public class Door : MonoBehaviour
         doorPosition = GameObject.FindGameObjectWithTag("Door").transform.position;
         if (isOpen)
             Open();
+    }
+    public void SetOpenState(bool openState)
+    {
+        isOpen = openState;
     }
     public Vector3 GetPosition()
     {
@@ -43,5 +47,9 @@ public class Door : MonoBehaviour
         isOpen = false;
         Vector3 openOffset = new Vector3(0.0f, 0.0f, 0.0f);
         transform.rotation = Quaternion.Euler(openOffset);
+    }
+    public void Lock(bool locked)
+    {
+        isLocked = locked;
     }
 }
