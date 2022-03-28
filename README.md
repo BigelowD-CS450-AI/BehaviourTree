@@ -8,6 +8,8 @@ It does not imclude an implementation of his pseudocode, ust the behaviour tree 
 
 ![a relative link](BehaviourTreeDiagram.png)
 
+![a relative link](AI_BehaviourTree_Advanced.svg)
+
 ## Class Diagram
 
 ![a relative link](BehaviourTree.drawio.png)
