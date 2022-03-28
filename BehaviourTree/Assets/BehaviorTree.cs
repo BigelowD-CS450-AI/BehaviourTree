@@ -31,7 +31,7 @@ public class BehaviorTree : ITask
                     new Sequence(new List<ITask> {
                         new Condition(Conditions.CorrectRoom),
                         new Action(Actions.CloseDoor),
-                        new Selector(new List<ITask> {
+                    new Selector(new List<ITask> {
                             new Sequence(new List<ITask> {
                                 new Condition(Conditions.GoingToBed),
                                 new Action(Actions.LockDoor),
