@@ -7,8 +7,11 @@ public class Character : MonoBehaviour
     Door door;
     //Character character = GameObject.FindObjectOfType<Character>();
     Vector3 distance;
-    float distanceOffset = 1.0f;
-    bool infrontOfDoor = false;
+    float distanceOffset = 2.0f;
+    public bool infrontOfDoor = false;
+    public bool inRoom = false;
+    public bool correctRoom;
+    public bool gointToBed;
     Vector3 startPos;
 
     // BehaviorTree bt = new BehaviorTree();
@@ -26,9 +29,11 @@ public class Character : MonoBehaviour
     {
         StopAllCoroutines();
         transform.position = startPos;
+        transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
         distance = door.GetPosition() - transform.position;
         infrontOfDoor = false;
-    }
+        inRoom = false;
+}
 
     public void RunBehaviourTree()
     {
@@ -38,7 +43,7 @@ public class Character : MonoBehaviour
 
     public IEnumerator MoveToDoor()
     {
-        float duration = 10.0f;
+        float duration = 5.0f;
         Vector3 origin = transform.position;
         Vector3 destination = door.GetPosition() - distance.normalized * distanceOffset;
         destination.y = transform.position.y;
@@ -54,13 +59,29 @@ public class Character : MonoBehaviour
     {
         while (!door.IsOpen())
             yield return null;
-        float duration = 10.0f;
+        float duration = 5.0f;
         Vector3 origin = transform.position;
         Vector3 destination = door.GetPosition() + distance.normalized * distanceOffset * 2;
         destination.y = transform.position.y;
         for (float t = 0; t < duration; t += Time.fixedDeltaTime)
         {
             transform.position = Vector3.Lerp(origin, destination, t / duration);
+            yield return null;
+        }
+        inRoom = true;
+    }
+
+    public IEnumerator LeaveRoom()
+    {
+        while (!inRoom)
+            yield return null;
+        float duration = 5.0f;
+        Vector3 origin = transform.position;
+        Vector3 destination = door.GetPosition() + distance.normalized * distanceOffset * 2;
+        destination.y = transform.position.y;
+        for (float t = 0; t < duration; t += Time.fixedDeltaTime)
+        {
+            transform.position = Vector3.Lerp(origin, startPos, t / duration);
             yield return null;
         }
     }
@@ -80,5 +101,30 @@ public class Character : MonoBehaviour
         while (!infrontOfDoor)
             yield return null;
         door.Open();
+    }
+    public IEnumerator CloseOnceInRoom()
+    {
+        while (!inRoom)
+            yield return null;
+        door.Close();
+    }
+    public IEnumerator LockOnceInRoom()
+    {
+        while (!inRoom)
+            yield return null;
+        door.Lock(true);
+    }
+    public IEnumerator LieDown()
+    {
+        while (!inRoom)
+            yield return null;
+        transform.position += new Vector3(0.0f, -0.5f, 0.0f);
+        transform.rotation = Quaternion.Euler(90.0f, 0.0f, 0.0f);
+    }
+    public IEnumerator SitDown()
+    {
+        while (!inRoom)
+            yield return null;
+        transform.position += new Vector3(0.0f, -1.0f, 0.0f);
     }
 }

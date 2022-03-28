@@ -7,9 +7,14 @@ public class UIManager : MonoBehaviour
 {
     public Toggle doorOpen;
     public Toggle doorLocked;
+    public Toggle correctRoom;
+    public Toggle goingToBed;
     public Door door;
     public Character character;
-
+    public void Start()
+    {
+        ResetSimulation();
+    }
     public void OnDoorOpenChanged()
     {
         if (doorOpen.isOn)
@@ -31,6 +36,14 @@ public class UIManager : MonoBehaviour
         else
             door.Lock(doorLocked.isOn);
     }
+    public void OnCorrectRoomChanged()
+    {
+        character.correctRoom = correctRoom.isOn;
+    }
+    public void OnGoingToBedChanged()
+    {
+        character.gointToBed = goingToBed.isOn;
+    }
     public void RunBehaviourTree()
     {
         character.RunBehaviourTree();
@@ -39,6 +52,8 @@ public class UIManager : MonoBehaviour
     {
         OnDoorOpenChanged();
         OnDoorLockedChanged();
+        character.correctRoom = correctRoom.isOn;
+        character.gointToBed = goingToBed.isOn;
         character.Reset();
     }
 }
